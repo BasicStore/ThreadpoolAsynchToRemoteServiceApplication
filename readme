@@ -1,0 +1,21 @@
+INVOKING A REMOTE WEBSERVICE USING ASYNCHRONOUS THREADS AND A THREADPOOL, AND COMPLETABLE FUTURE INTERFACE
+
+Demonstrates:
+1) Invoking web services (from the client side)
+2) Handling calls asynchronously
+
+By running expensive jobs in the background and waiting for the results using Java’s CompletableFuture interface
+is an approach to scaling services.
+
+- multiple threads can be running this service method at the same time
+- the job returned may still be running when it is returned
+- the service method invokes an existing web service
+
+----------------------------------------------------------------------------------------------------------------
+ EXAMPLE MANUAL SYNCHRONOUS CALLS OUTSIDE OF APP:
+ 
+https://api.github.com/users/PivotalSoftware
+https://api.github.com/users/CloudFoundry
+https://api.github.com/users/Spring-Projects 
+
+----------------------------------------------------------------------------------------------------------------
