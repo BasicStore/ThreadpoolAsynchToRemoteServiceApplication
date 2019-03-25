@@ -1,6 +1,7 @@
 package com.asynch;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.asynch.dm.User;
 import com.asynch.services.GitHubLookupService;
+import com.asynch.services.SheepService;
 
 
 @SpringBootApplication
@@ -23,6 +25,9 @@ public class ThreadpoolAsynchToRemoteServiceApplication implements CommandLineRu
 	
 	@Autowired
 	private GitHubLookupService gitHubLookupService;
+		
+	@Autowired
+	private SheepService sheepService;
 	
 	public static void main(String[] args) {
 		logger.info("starting the app....");
@@ -36,7 +41,7 @@ public class ThreadpoolAsynchToRemoteServiceApplication implements CommandLineRu
         executor.setCorePoolSize(2);
         executor.setMaxPoolSize(2);
         executor.setQueueCapacity(500);
-        executor.setThreadNamePrefix("GithubLookup-");
+        executor.setThreadNamePrefix("GithubAndSheepLookup-");
         executor.initialize();
         return executor;
     }
@@ -44,9 +49,10 @@ public class ThreadpoolAsynchToRemoteServiceApplication implements CommandLineRu
 	
 	@Override
     public void run(String... args) throws Exception {
-        // Start the clock
+		
+		// Start the clock
         long start = System.currentTimeMillis();
-
+        
         // Kick of multiple, asynchronous lookups
         CompletableFuture<User> page1 = gitHubLookupService.findUser("PivotalSoftware");
         CompletableFuture<User> page2 = gitHubLookupService.findUser("CloudFoundry");
@@ -61,6 +67,41 @@ public class ThreadpoolAsynchToRemoteServiceApplication implements CommandLineRu
         logger.info("--> " + page1.get());
         logger.info("--> " + page2.get());
         logger.info("--> " + page3.get());
+        
+        // ======================================================================================
+        
+        // invoke the BasicWebService running on this same machine
+        // note that the same task executor is shared for this purpose
+		logger.info("About to lookup sheep....");
+		
+		CompletableFuture<String> sheepGreeting1 = sheepService.breedSheep(1l);
+		CompletableFuture<String> sheepGreeting2 = sheepService.breedSheep(2l);
+		CompletableFuture<String> sheepGreeting3 = sheepService.breedSheep(3l);
+		CompletableFuture<String> sheepGreeting4 = sheepService.breedSheep(4l);
+		CompletableFuture<String> sheepGreeting5 = sheepService.breedSheep(5l);
+		CompletableFuture<String> sheepGreeting6 = sheepService.breedSheep(6l);
+		CompletableFuture<String> sheepGreeting7 = sheepService.breedSheep(7l);
+		CompletableFuture<String> sheepGreeting8 = sheepService.breedSheep(8l);
+		CompletableFuture<String> sheepGreeting9 = sheepService.breedSheep(9l);
+		CompletableFuture<String> sheepGreeting10 = sheepService.breedSheep(10l);
+		CompletableFuture<String> sheepGreeting11 = sheepService.breedSheep(11l);
+		CompletableFuture<String> sheepGreeting12 = sheepService.breedSheep(12l);
+		CompletableFuture.allOf(sheepGreeting1, sheepGreeting1, sheepGreeting1, sheepGreeting1, sheepGreeting1,
+				sheepGreeting1, sheepGreeting1, sheepGreeting1, sheepGreeting1, sheepGreeting1,
+				sheepGreeting1, sheepGreeting1).join();
+		logger.info("Elapsed time for processes: " + (System.currentTimeMillis() - start));
+        logger.info("--> " + sheepGreeting1.get());
+        logger.info("--> " + sheepGreeting2.get());
+        logger.info("--> " + sheepGreeting3.get());
+        logger.info("--> " + sheepGreeting4.get());
+        logger.info("--> " + sheepGreeting5.get());
+        logger.info("--> " + sheepGreeting6.get());
+        logger.info("--> " + sheepGreeting7.get());
+        logger.info("--> " + sheepGreeting8.get());
+        logger.info("--> " + sheepGreeting9.get());
+        logger.info("--> " + sheepGreeting10.get());
+        logger.info("--> " + sheepGreeting11.get());
+        logger.info("--> " + sheepGreeting12.get());
     }
 	
 	

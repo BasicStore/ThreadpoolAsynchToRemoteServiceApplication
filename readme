@@ -18,4 +18,13 @@ https://api.github.com/users/PivotalSoftware
 https://api.github.com/users/CloudFoundry
 https://api.github.com/users/Spring-Projects 
 
+PRE-REQUISITE: set the BasicWebService running on a machine at port 8081
+
+----------------------------------------------------------------------------------------------------------------
+NOTE:
+
+- it is possible to run 2 webservices locally, but obviously they must be running on different posts
+- use http when invoking a webservice unless you know it is https enabled
+- remember that only certain characters are allowed in an HTTP GET request 
+
 ----------------------------------------------------------------------------------------------------------------
