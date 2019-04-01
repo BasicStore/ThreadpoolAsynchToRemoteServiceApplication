@@ -1,6 +1,5 @@
 package com.asynch.services;
 import java.util.concurrent.CompletableFuture;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -10,14 +9,14 @@ import org.springframework.web.client.RestTemplate;
 
 
 @Service
-public class SheepService {
+public class BasicWeb2Service {
 
 	private static final Logger logger = LoggerFactory.getLogger(SheepService.class);
 
-    private final RestTemplate restTemplate; // communicates with BasicWebService
+    private final RestTemplate restTemplate2; // communicates with BasicWebService
     
-    public SheepService(RestTemplateBuilder restTemplateBuilder) {
-        this.restTemplate = restTemplateBuilder.build();
+    public BasicWeb2Service(RestTemplateBuilder restTemplateBuilder) {
+        this.restTemplate2 = restTemplateBuilder.build();
     }
 	
 	
@@ -26,7 +25,12 @@ public class SheepService {
     public CompletableFuture<String> breedSheep(long id) throws InterruptedException {
     	// localhost:8080/greeting?name=blar
     	String url = "http://localhost:8081/greeting?name=blarblarZZ" + id;
-        String sheepGreeting = restTemplate.getForObject(url, String.class);
+        String sheepGreeting = restTemplate2.getForObject(url, String.class);
+        
+        
+        
+        
+        
         return CompletableFuture.completedFuture(sheepGreeting);
     }
     

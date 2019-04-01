@@ -1,7 +1,6 @@
 package com.asynch;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,18 +45,22 @@ public class ThreadpoolAsynchToRemoteServiceApplication implements CommandLineRu
         return executor;
     }
 	
-	
+	// WAYS TO COMMUNICATE BETWEEN JVMs in JAVA: [JMS eg queue], [networking], [RPC]
 	@Override
     public void run(String... args) throws Exception {
 		
 		// Start the clock
         long start = System.currentTimeMillis();
         
+        // RPC approach
+        // NOTE THIS APPROACH RETURNS AN ACTUAL JAVA OBJECT WHICH MUST BE KNOWN / DUPLICATED ON THE CALLER,
+        // WHICH PROBABLY DEFEATS THE OBJECT
         // Kick of multiple, asynchronous lookups
         CompletableFuture<User> page1 = gitHubLookupService.findUser("PivotalSoftware");
         CompletableFuture<User> page2 = gitHubLookupService.findUser("CloudFoundry");
         CompletableFuture<User> page3 = gitHubLookupService.findUser("Spring-Projects");
-
+        
+        
         // Wait until they are all done - the join() method does just that, or it throws a Completion or Cancellation exception
         // WHY WOULD YOU DO THIS?? defeats the object to wait until they all complete..... 
         CompletableFuture.allOf(page1,page2,page3).join();
